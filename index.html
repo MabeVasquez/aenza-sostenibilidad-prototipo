@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sostenibilidad — AENZA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fff;color:#0a0a12;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{border:none;background:none;cursor:none;font-family:inherit}
+img{display:block;max-width:100%}
+:root{
+  --blue:#0345F5;--blue2:#0234c8;--ink:#0a0a12;
+  --body:#3a3a52;--light:#6e6e88;--rule:#eaeaf2;
+  --surface:#f6f6f9;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --spring:cubic-bezier(.16,1,.3,1);
+  --max:1160px;--nav:68px;
+}
+/* cursor */
+#cursor{position:fixed;inset:0;z-index:9999;pointer-events:none}
+#c-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--blue);transform:translate(-50%,-50%)}
+#c-ring{position:absolute;width:34px;height:34px;border:1.5px solid rgba(3,69,245,.35);border-radius:50%;transform:translate(-50%,-50%);transition:width .4s var(--spring),height .4s var(--spring)}
+body.over-dark #c-dot{background:#fff}
+body.over-dark #c-ring{border-color:rgba(255,255,255,.4)}
+/* nav */
+#nav{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 52px;transition:background .4s,box-shadow .4s}
+#nav.solid{background:rgba(255,255,255,.97);backdrop-filter:blur(24px);box-shadow:0 1px 0 var(--rule)}
+.nav-logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.92rem;letter-spacing:.05em;color:#fff;transition:color .4s}
+#nav.solid .nav-logo{color:var(--ink)}
+.nav-logo-img{height:52px;width:auto;object-fit:contain;display:block;filter:brightness(0) invert(1);transition:filter .4s}
+#nav.solid .nav-logo-img{filter:none}
+.nav-logo-mark{display:none}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none}
+.nav-links>li>a{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.55);padding:7px 14px;border-radius:4px;transition:color .25s,background .25s}
+#nav.solid .nav-links>li>a{color:#6e6e88}
+.nav-links>li>a:hover{color:#fff;background:rgba(255,255,255,.08)}
+#nav.solid .nav-links>li>a:hover{color:var(--blue);background:rgba(3,69,245,.06)}
+.nav-btn-secondary{display:inline-flex;align-items:center;gap:9px;padding:10px 20px;border-radius:6px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;transition:background .25s,color .25s}
+#nav.solid .nav-btn-secondary{background:rgba(9,9,15,.07);color:var(--ink)}
+.nav-dir-icon{display:grid;grid-template-columns:1fr 1fr;gap:2.5px}
+.nav-dir-icon span{display:block;width:4px;height:4px;border-radius:1px;background:currentColor;opacity:.7}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:4px;background:var(--blue);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;transition:background .22s}
+.nav-cta:hover{background:var(--blue2)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.ic{display:block}
+/* utils */
+.container{max-width:var(--max);margin:0 auto;padding:0 52px}
+.label{display:inline-flex;align-items:center;gap:9px;font-size:.6rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.label::before{content:'';width:16px;height:1px;background:var(--blue)}
+.h2{font-size:clamp(1.9rem,2.8vw,2.7rem);font-weight:800;line-height:1.1;letter-spacing:-.025em;color:var(--ink)}
+.h2 em{font-family:var(--serif);font-style:italic;color:var(--blue)}
+.h2.inv{color:#fff}.h2.inv em{color:rgba(255,255,255,.75)}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:6px;background:var(--blue);color:#fff;font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:background .22s,transform .2s}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--blue);padding:14px 30px;border-radius:6px;font-size:.74rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;transition:transform .22s,box-shadow .22s}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.18)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;border-radius:6px;border:1.5px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85);font-size:.74rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:border-color .25s,background .25s,color .25s}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08);color:#fff}
+@keyframes heroZoomIn{to{transform:scale(1);filter:brightness(.44) saturate(.8)}}
+@keyframes scrollFall{0%{top:-100%}60%{top:100%}100%{top:100%}}
+/* nav responsive */
+.nav-links{display:none}
+@media(min-width:1081px){.nav-links{display:flex}}
+@media(max-width:1080px){#nav{padding:0 36px}}
+@media(max-width:680px){#nav{padding:0 22px}}
+
+/* ═══ 1. HERO ═══ */
+.sp-hero{position:relative;height:100vh;min-height:640px;overflow:hidden;background:#06080f;display:flex;align-items:flex-end}
+.sp-hero-bg{position:absolute;inset:0;background:url('editadas_6.JPG') center/cover,url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&auto=format&fit=crop&q=85') center/cover;filter:brightness(.38) saturate(.7);transform:scale(1.06);animation:heroZoomIn 1.8s cubic-bezier(.16,1,.3,1) forwards}
+.sp-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(6,6,14,.82) 0%,rgba(6,6,14,.3) 55%,transparent 100%),linear-gradient(to top,rgba(6,6,14,.7) 0%,transparent 55%)}
+.sp-hero-content{position:relative;z-index:2;max-width:var(--max);margin:0 auto;padding:0 52px 100px;width:100%}
+.sp-hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:.6rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:22px}
+.sp-hero-eyebrow span{width:20px;height:1px;background:var(--blue);display:block}
+.sp-hero h1{font-size:clamp(3rem,6vw,6rem);font-weight:800;line-height:1.03;letter-spacing:-.038em;color:#fff;margin-bottom:20px;max-width:680px}
+.sp-hero h1 em{font-family:var(--serif);font-style:italic;color:var(--blue)}
+.sp-hero-sub{font-size:1rem;line-height:1.8;color:rgba(255,255,255,.52);max-width:460px}
+
+/* ═══ 2. INTRO ═══ */
+.sp-intro{background:#fff;padding:88px 0}
+.sp-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.sp-intro-quote{font-family:var(--serif);font-style:italic;font-size:1.15rem;line-height:1.7;color:var(--ink);border-left:3px solid var(--blue);padding-left:22px;margin-bottom:24px}
+.sp-intro-body{font-size:.95rem;line-height:1.82;color:var(--body);margin-bottom:14px}
+.sp-intro-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.sp-intro-list li{display:flex;align-items:flex-start;gap:10px;font-size:.85rem;line-height:1.6;color:var(--body)}
+.sp-intro-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:7px}
+
+/* ═══ 3. MÉTRICAS ═══ */
+.sp-metrics{background:var(--ink);display:grid;grid-template-columns:repeat(3,1fr)}
+.sp-metric{padding:52px 40px;border-right:1px solid rgba(255,255,255,.06);position:relative;transition:background .3s;cursor:default}
+.sp-metric:nth-child(3),.sp-metric:nth-child(6){border-right:none}
+.sp-metric:nth-child(4),.sp-metric:nth-child(5),.sp-metric:nth-child(6){border-top:1px solid rgba(255,255,255,.06)}
+.sp-metric:hover{background:rgba(3,69,245,.08)}
+.sp-metric::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--spring)}
+.sp-metric:hover::after{transform:scaleX(1)}
+.sp-metric-val{font-size:2.8rem;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1;display:flex;align-items:baseline;gap:3px;margin-bottom:10px}
+.sp-count{font-size:2.8rem;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1}
+.sp-metric-label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.13em;color:rgba(255,255,255,.38);line-height:1.5}
+.sp-metric-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,.06)}
+.sp-metric-bar-fill{height:100%;width:0;background:var(--blue);transition:width 2s cubic-bezier(.16,1,.3,1)}
+
+/* ═══ 4. PILARES ASG ═══ */
+.sp-asg{background:var(--surface);overflow:hidden}
+.sp-asg-header{text-align:center;padding:80px 52px 60px;position:relative}
+.sp-asg-header .label{color:var(--blue);justify-content:center}
+.sp-asg-header .h2{color:var(--ink)}
+.sp-asg-panels{display:flex;height:500px;border-top:1px solid rgba(0,0,0,.06)}
+.sp-asg-panel{position:relative;overflow:hidden;flex:1;transition:flex .7s cubic-bezier(.16,1,.3,1);cursor:default}
+.sp-asg-panels:has(.sp-asg-panel:nth-child(1):hover) .sp-asg-panel:nth-child(1){flex:2.2}
+.sp-asg-panels:has(.sp-asg-panel:nth-child(2):hover) .sp-asg-panel:nth-child(2){flex:2.2}
+.sp-asg-panels:has(.sp-asg-panel:nth-child(3):hover) .sp-asg-panel:nth-child(3){flex:2.2}
+.sp-asg-panel-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.32) saturate(.6);transform:scale(1.06);transition:transform .9s cubic-bezier(.16,1,.3,1),filter .7s}
+.sp-asg-panel:hover .sp-asg-panel-bg{transform:scale(1);filter:brightness(.22) saturate(.7)}
+.sp-asg-panel::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(6,6,14,.98) 0%,rgba(6,6,14,.4) 55%,transparent 100%)}
+.sp-asg-panel-accent{position:absolute;top:0;left:0;right:0;height:3px;z-index:4;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.sp-asg-panel:hover .sp-asg-panel-accent{transform:scaleX(1)}
+.sp-asg-panel+.sp-asg-panel::before{content:'';position:absolute;top:0;left:0;bottom:0;width:1px;background:rgba(255,255,255,.08);z-index:5}
+.sp-asg-panel-letter{position:absolute;top:20px;right:24px;z-index:2;font-size:7rem;font-weight:800;line-height:1;letter-spacing:-.06em;color:rgba(255,255,255,.07);transition:color .5s;pointer-events:none}
+.sp-asg-panel:hover .sp-asg-panel-letter{color:rgba(255,255,255,.14)}
+.sp-asg-panel-num{position:absolute;top:24px;left:36px;z-index:3;font-size:.56rem;font-weight:800;letter-spacing:.2em;color:rgba(255,255,255,.25)}
+.sp-asg-panel-body{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:36px 36px 40px}
+.sp-asg-panel-tag{display:inline-flex;align-items:center;gap:7px;font-size:.56rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.sp-asg-panel-tag::before{content:'';width:10px;height:1.5px;background:var(--blue)}
+.sp-asg-panel-title{font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.15;margin-bottom:12px}
+.sp-asg-panel-desc{font-size:.82rem;line-height:1.68;color:rgba(255,255,255,.55);margin-bottom:18px}
+.sp-asg-panel-link{display:inline-flex;align-items:center;gap:7px;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:2px;width:fit-content;transition:gap .3s}
+.sp-asg-panel-link:hover{gap:10px}
+
+/* ═══ 5. COMPROMISOS BENTO ═══ */
+.sp-commits{background:var(--ink);padding:88px 0}
+.sp-commits-head{text-align:center;margin-bottom:52px;padding:0 52px}
+.sp-commits-head .label{color:rgba(255,255,255,.4);justify-content:center}
+.sp-commits-head .label::before{background:rgba(255,255,255,.25)}
+.sp-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;max-width:var(--max);margin:0 auto;padding:0 52px}
+.sp-bento-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:32px;position:relative;overflow:hidden;cursor:default;transition:background .4s,border-color .4s,transform .4s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;justify-content:flex-end;min-height:210px}
+.sp-bento-card:hover{background:rgba(3,69,245,.15);border-color:rgba(3,69,245,.4);transform:translateY(-5px)}
+.sp-bento-card:nth-child(1){grid-column:span 5;min-height:260px}
+.sp-bento-card:nth-child(2){grid-column:span 7;min-height:260px}
+.sp-bento-card:nth-child(3){grid-column:span 4}
+.sp-bento-card:nth-child(4){grid-column:span 4}
+.sp-bento-card:nth-child(5){grid-column:span 4}
+.sp-bento-card:nth-child(6){grid-column:span 12;min-height:130px;flex-direction:row;align-items:center;gap:28px}
+.sp-bento-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.sp-bento-card:hover::before{transform:scaleX(1)}
+.sp-bento-ico{width:44px;height:44px;border-radius:10px;background:rgba(3,69,245,.15);border:1px solid rgba(3,69,245,.3);display:flex;align-items:center;justify-content:center;color:var(--blue);margin-bottom:18px;flex-shrink:0;transition:background .35s,border-color .35s,transform .4s cubic-bezier(.16,1,.3,1)}
+.sp-bento-card:hover .sp-bento-ico{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(-8deg) scale(1.1)}
+.sp-bento-card:nth-child(6) .sp-bento-ico{margin-bottom:0}
+.sp-bento-content{position:relative;z-index:1;flex:1}
+.sp-bento-label{font-size:.56rem;font-weight:800;letter-spacing:.2em;color:var(--blue);text-transform:uppercase;margin-bottom:6px}
+.sp-bento-title{font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.2;margin-bottom:8px}
+.sp-bento-desc{font-size:.79rem;line-height:1.65;color:rgba(255,255,255,.45);transition:color .35s}
+.sp-bento-card:hover .sp-bento-desc{color:rgba(255,255,255,.7)}
+
+/* ═══ 6. CERTIFICACIONES ═══ */
+.sp-certs{background:var(--ink);padding:0}
+.sp-certs-top{padding:88px 52px 64px;max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end}
+.sp-certs-top .label{color:rgba(255,255,255,.4)}
+.sp-certs-top .label::before{background:rgba(255,255,255,.25)}
+.sp-certs-top .h2{color:#fff}
+.sp-certs-top .h2 em{color:var(--blue)}
+.sp-certs-top-note{font-size:.85rem;color:rgba(255,255,255,.35);max-width:260px;line-height:1.65;text-align:right}
+.sp-certs-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.07)}
+.sp-cert-col{padding:44px 36px 52px;border-right:1px solid rgba(255,255,255,.07);position:relative;transition:background .35s}
+.sp-cert-col:last-child{border-right:none}
+.sp-cert-col:hover{background:rgba(255,255,255,.03)}
+.sp-cert-col::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.sp-cert-col:hover::before{transform:scaleX(1)}
+.sp-cert-col-logo{height:38px;width:auto;max-width:130px;object-fit:contain;display:block;filter:brightness(0) invert(1);opacity:.65;margin-bottom:10px;transition:opacity .3s,transform .3s cubic-bezier(.16,1,.3,1)}
+.sp-cert-col:hover .sp-cert-col-logo{opacity:1;transform:translateY(-2px)}
+.sp-cert-col-name{font-size:.92rem;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:4px;transition:color .3s}
+.sp-cert-col:hover .sp-cert-col-name{color:#fff}
+.sp-cert-col-sub{font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.25);margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sp-cert-list{display:flex;flex-direction:column;gap:6px}
+.sp-cert-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);text-decoration:none;transition:background .25s,border-color .25s,transform .25s cubic-bezier(.16,1,.3,1)}
+.sp-cert-item:hover{background:rgba(3,69,245,.2);border-color:rgba(3,69,245,.4);transform:translateX(4px)}
+.sp-cert-item-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.sp-cert-item-label{font-size:.73rem;font-weight:600;color:rgba(255,255,255,.5);transition:color .25s;flex:1}
+.sp-cert-item:hover .sp-cert-item-label{color:#fff}
+.sp-cert-item-arrow{color:rgba(255,255,255,.2);transition:color .25s,transform .25s}
+.sp-cert-item:hover .sp-cert-item-arrow{color:var(--blue);transform:translateX(3px)}
+.sp-certs-foot{border-top:1px solid rgba(255,255,255,.07);padding:36px 52px;max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.sp-certs-foot p{font-size:.85rem;color:rgba(255,255,255,.35);line-height:1.6}
+.sp-certs-foot strong{color:rgba(255,255,255,.6);font-weight:700}
+
+/* ═══ 7. CTA ═══ */
+.sp-cta{background:var(--blue);padding:88px 0;position:relative;overflow:hidden;text-align:center}
+.sp-cta::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 48px,rgba(255,255,255,.025) 48px,rgba(255,255,255,.025) 49px)}
+.sp-cta-glow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:rgba(255,255,255,.07);filter:blur(80px);pointer-events:none}
+.sp-cta-inner{position:relative;z-index:1}
+.sp-cta-sup{font-size:.6rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:16px}
+.sp-cta-h{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.025em;margin-bottom:40px;max-width:580px;margin-left:auto;margin-right:auto}
+.sp-cta-h em{font-family:var(--serif);font-style:italic;color:rgba(255,255,255,.8)}
+.sp-cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ═══ FOOTER ═══ */
+#footer{background:#07080f;padding:0;display:block;visibility:visible}
+.ft-top-bar{display:flex;align-items:center;justify-content:space-between;padding:32px 52px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ft-logo-big{display:flex;align-items:center;gap:12px;font-size:1.6rem;font-weight:800;letter-spacing:.06em;color:#fff}
+.ft-tagline-italic{font-size:.82rem;font-style:italic;color:rgba(255,255,255,.35);font-family:var(--serif);margin-top:4px}
+.ft-top-right{display:flex;align-items:center;gap:12px}
+.ft-contact-btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:12px 28px;border-radius:4px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:background .22s}
+.ft-contact-btn:hover{background:var(--blue2)}
+.ft-social-row{display:flex;gap:8px}
+.ft-social-row a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);transition:border-color .22s,color .22s}
+.ft-social-row a:hover{border-color:var(--blue);color:var(--blue)}
+.ft-cols-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid rgba(255,255,255,.06)}
+.ft-col-v2{padding:40px 52px;border-right:1px solid rgba(255,255,255,.06)}
+.ft-col-v2:last-child{border-right:none}
+.ft-col-v2 h5{font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px}
+.ft-col-v2 ul{list-style:none}
+.ft-col-v2 li{margin-bottom:11px}
+.ft-col-v2 a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color .22s;display:inline-block}
+.ft-col-v2 a:hover{color:#fff}
+.ft-contact-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.ft-contact-row svg{flex-shrink:0;margin-top:1px;color:var(--blue)}
+.ft-contact-row span,.ft-contact-row a{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.55;display:block}
+.ft-bottom-bar{display:flex;justify-content:space-between;align-items:center;padding:18px 52px}
+.ft-bottom-bar p,.ft-bottom-bar a{font-size:.68rem;color:rgba(255,255,255,.2);font-style:italic}
+
+@media(max-width:1080px){
+  .sp-intro-grid{grid-template-columns:1fr;gap:40px}
+  .sp-metrics{grid-template-columns:1fr 1fr}
+  .sp-metric:nth-child(2){border-right:none}
+  .sp-metric:nth-child(3){border-top:1px solid rgba(255,255,255,.06)}
+  .sp-asg-panels{flex-direction:column;height:auto}
+  .sp-asg-panel{min-height:260px;flex:1 !important}
+  .sp-bento{grid-template-columns:1fr 1fr;padding:0 36px}
+  .sp-bento-card:nth-child(1),.sp-bento-card:nth-child(2){grid-column:span 1}
+  .sp-bento-card:nth-child(3),.sp-bento-card:nth-child(4),.sp-bento-card:nth-child(5){grid-column:span 1}
+  .sp-bento-card:nth-child(6){grid-column:span 2;flex-direction:column;align-items:flex-start}
+  .sp-certs-grid{grid-template-columns:1fr 1fr}
+  .sp-cert-col:nth-child(2){border-right:none}
+  .sp-cert-col:nth-child(3),.sp-cert-col:nth-child(4){border-top:1px solid rgba(255,255,255,.07)}
+  .sp-certs-top{flex-direction:column;align-items:flex-start;gap:14px;padding:72px 36px 52px}
+  .sp-certs-top-note{text-align:left}
+  .sp-certs-foot{padding:32px 36px;flex-direction:column;align-items:flex-start}
+  .container{padding:0 36px}
+  .sp-commits-head{padding:0 36px}
+  .ft-cols-grid{grid-template-columns:1fr 1fr}
+  .ft-col-v2{padding:32px 36px}
+  .ft-top-bar,.ft-bottom-bar{padding:28px 36px}
+}
+@media(max-width:680px){
+  .sp-hero-content{padding:0 22px 80px}
+  .sp-metrics{grid-template-columns:1fr 1fr}
+  .sp-metric{padding:36px 22px}
+  .sp-asg-header{padding:56px 22px 40px}
+  .sp-asg-panel-body{padding:28px 24px 32px}
+  .sp-bento{grid-template-columns:1fr;padding:0 22px}
+  .sp-bento-card:nth-child(n){grid-column:span 1}
+  .sp-bento-card:nth-child(6){flex-direction:column;align-items:flex-start}
+  .sp-certs-grid{grid-template-columns:1fr}
+  .sp-cert-col{border-right:none !important;border-bottom:1px solid rgba(255,255,255,.07);padding:36px 22px}
+  .container{padding:0 22px}
+  .sp-commits-head{padding:0 22px}
+  .ft-cols-grid{grid-template-columns:1fr}
+  .ft-col-v2{border-right:none;border-bottom:1px solid rgba(255,255,255,.06);padding:28px 22px}
+  .ft-top-bar{flex-direction:column;align-items:flex-start;gap:20px;padding:24px 22px}
+  .ft-bottom-bar{padding:14px 22px;flex-direction:column;gap:6px;align-items:flex-start}
+}
+
+/* ── Certificaciones sobre blanco ── */
+.sp-certs { background: #fff !important; }
+.sp-certs-top .label { color: var(--blue) !important; }
+.sp-certs-top .label::before { background: var(--blue) !important; }
+.sp-certs-top .h2 { color: var(--ink) !important; }
+.sp-certs-top .h2 em { color: var(--blue) !important; }
+.sp-certs-top-note { color: var(--body) !important; }
+.sp-certs-grid { border-top: 1px solid var(--rule) !important; }
+.sp-cert-col { border-right: 1px solid var(--rule) !important; transition: background .3s; }
+.sp-cert-col:hover { background: var(--surface) !important; }
+.sp-cert-col::before { background: var(--blue) !important; }
+.sp-cert-col-logo { filter: none !important; opacity: 1 !important; }
+.sp-cert-col-name { color: var(--ink) !important; }
+.sp-cert-col:hover .sp-cert-col-name { color: var(--blue) !important; }
+.sp-cert-col-sub { color: var(--light) !important; border-bottom: 1px solid var(--rule) !important; }
+.sp-cert-item { border: 1px solid var(--rule) !important; background: var(--surface) !important; }
+.sp-cert-item:hover { background: rgba(3,69,245,.06) !important; border-color: rgba(3,69,245,.25) !important; }
+.sp-cert-item-label { color: var(--body) !important; }
+.sp-cert-item:hover .sp-cert-item-label { color: var(--blue) !important; }
+.sp-cert-item-arrow { color: var(--light) !important; }
+.sp-cert-item:hover .sp-cert-item-arrow { color: var(--blue) !important; }
+.sp-certs-foot { border-top: 1px solid var(--rule) !important; }
+.sp-certs-foot p { color: var(--body) !important; }
+.sp-certs-foot strong { color: var(--ink) !important; }
+
+
+/* Cert logo fallback */
+.sp-cert-logo-fb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  height: 38px;
+}
+.sp-cert-logo-fb span {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+</style>
+</head>
+<body class="over-dark">
+<div id="cursor"><div id="c-dot"></div><div id="c-ring"></div></div>
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo nav-logo-has-img">
+    <!-- Un solo logo — pon tu archivo aquí. Se vuelve blanco sobre hero y oscuro al hacer scroll -->
+    <img class="nav-logo-img single" src="aenza.png" alt="AENZA"
+         onerror="this.style.display='none'"/>
+    <!-- Fallback SVG si no hay imagen -->
+    <svg class="nav-logo-mark" width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path d="M2 26L14 2L26 26" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="19" y1="17" x2="27" y2="5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-logo-text" style="display:none">AENZA</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#quienes">Quiénes Somos</a></li>
+    <li><a href="https://investorrelations.aenza.com.pe/es" target="_blank">Inversionistas</a></li>
+    <li><a href="#noticias">Noticias</a></li>
+    <li><a href="https://www.canaletico.net/" target="_blank">Línea Ética</a></li>
+    <li><a href="https://www.aenza.com.pe/politicas/" target="_blank">Políticas</a></li>
+    <li><a href="https://www.aenza.com.pe/sostenibilidad/" target="_blank">Sostenibilidad</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <a href="https://investorrelations.aenza.com.pe/gobierno-corporativo/directorio" target="_blank" class="nav-btn-secondary">
+      <span class="nav-dir-icon"><span></span><span></span><span></span><span></span></span>
+      Directorio
+    </a>
+    <a href="https://www.aenza.com.pe/contactenos/aenza/?subject=AENZA" target="_blank" class="nav-cta">
+      Contáctenos
+      <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg>
+    </a>
+    <button class="hb" id="hb" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+
+<!-- 1. HERO -->
+<div class="sp-hero">
+  <div class="sp-hero-bg"></div>
+  <div class="sp-hero-content">
+    <div class="sp-hero-eyebrow"><span></span>AENZA · Sostenibilidad 2024</div>
+    <h1>Sostenibilidad como<br><em>forma de hacer negocios</em></h1>
+    <p class="sp-hero-sub">Integramos factores ambientales, sociales y de gobernanza en el día a día de nuestras operaciones para generar valor duradero al Perú.</p>
+  </div>
+</div>
+
+<!-- 2. INTRO -->
+<div class="sp-intro">
+  <div class="container">
+    <div class="sp-intro-grid">
+      <div>
+        <div class="label">Nuestro enfoque</div>
+        <h2 class="h2">Un compromiso <em>genuino</em> con el futuro</h2>
+      </div>
+      <div>
+        <p class="sp-intro-quote">"Creemos en un futuro sostenible y estamos comprometidos a jugar un papel fundamental en su construcción."</p>
+        <p class="sp-intro-body">En AENZA, la sostenibilidad no es solo un objetivo — es una forma de hacer negocios. Nuestro Sistema de Gestión Ambiental y Social establece estándares comunes en todas las unidades de negocio con KPIs verificables.</p>
+        <ul class="sp-intro-list">
+          <li>Gestión de factores ASG embebida en el día a día de las operaciones.</li>
+          <li>Enfoque integrado en todos los niveles de la organización.</li>
+          <li>Minimización del impacto ambiental y relaciones comunitarias positivas.</li>
+          <li>Opción sostenible de inversión con métricas verificadas.</li>
+        </ul>
+        <a href="https://www.aenza.com.pe/media/fjnptftw/aenza-reporte-integrado.pdf" target="_blank" class="btn-primary">
+          Reporte integrado 2024
+          <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. MÉTRICAS -->
+<div class="sp-metrics" id="sp-metrics-wrap">
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span class="sp-count" data-target="28059" data-suffix="">0</span></div>
+    <div class="sp-metric-label">Horas de capacitación a comunidades locales</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span class="sp-count" data-target="20673" data-suffix="">0</span></div>
+    <div class="sp-metric-label">Personas beneficiadas en capacitaciones</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span class="sp-count" data-target="24" data-suffix="">0</span></div>
+    <div class="sp-metric-label">Programas sociales activos en 2024</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span class="sp-count" data-target="100" data-suffix="%">0</span></div>
+    <div class="sp-metric-label">Proyectos de vivienda social en Bono Verde</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span class="sp-count" data-target="34" data-suffix="%">0</span></div>
+    <div class="sp-metric-label">Contratación de mano de obra local</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+  <div class="sp-metric">
+    <div class="sp-metric-val"><span style="font-size:2rem;color:rgba(255,255,255,.4);margin-right:2px">+</span><span class="sp-count" data-target="10" data-suffix="">0</span></div>
+    <div class="sp-metric-label">Puntos CSA 2024 vs 2023</div>
+    <div class="sp-metric-bar"><div class="sp-metric-bar-fill"></div></div>
+  </div>
+</div>
+
+<!-- 4. PILARES ASG -->
+<div class="sp-asg">
+  <div class="sp-asg-header">
+    <div class="label">Ejes estratégicos</div>
+    <h2 class="h2">Tres pilares, un <em>propósito</em></h2>
+  </div>
+  <div class="sp-asg-panels">
+    <div class="sp-asg-panel">
+      <div class="sp-asg-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&auto=format&fit=crop&q=85')"></div>
+      <div class="sp-asg-panel-accent"></div>
+      <div class="sp-asg-panel-letter">A</div>
+      <div class="sp-asg-panel-num">01</div>
+      <div class="sp-asg-panel-body">
+        <div class="sp-asg-panel-tag">Medio Ambiente</div>
+        <div class="sp-asg-panel-title">Ambiental</div>
+        <div class="sp-asg-panel-desc">ISO 14001, metas de carbono y energías renovables en toda la operación del grupo.</div>
+        <a href="https://www.aenza.com.pe/sostenibilidad/" class="sp-asg-panel-link">Saber más <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <div class="sp-asg-panel">
+      <div class="sp-asg-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&auto=format&fit=crop&q=85')"></div>
+      <div class="sp-asg-panel-accent"></div>
+      <div class="sp-asg-panel-letter">S</div>
+      <div class="sp-asg-panel-num">02</div>
+      <div class="sp-asg-panel-body">
+        <div class="sp-asg-panel-tag">Impacto Social</div>
+        <div class="sp-asg-panel-title">Social</div>
+        <div class="sp-asg-panel-desc">24 programas activos, +20,000 beneficiados y 34% de contratación local en zonas de operación.</div>
+        <a href="https://www.aenza.com.pe/sostenibilidad/" class="sp-asg-panel-link">Saber más <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <div class="sp-asg-panel">
+      <div class="sp-asg-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=85')"></div>
+      <div class="sp-asg-panel-accent"></div>
+      <div class="sp-asg-panel-letter">G</div>
+      <div class="sp-asg-panel-num">03</div>
+      <div class="sp-asg-panel-body">
+        <div class="sp-asg-panel-tag">Gobernanza</div>
+        <div class="sp-asg-panel-title">Gobernanza</div>
+        <div class="sp-asg-panel-desc">4 comités del directorio, ISO 37001 anti-soborno en todo el grupo y canal ético activo.</div>
+        <a href="https://investorrelations.aenza.com.pe/gobierno-corporativo/directorio" target="_blank" class="sp-asg-panel-link">Ver directorio <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. COMPROMISOS BENTO -->
+<div class="sp-commits">
+  <div class="sp-commits-head">
+    <div class="label">Acciones concretas</div>
+    <h2 class="h2 inv">Lo que hacemos <em>cada día</em></h2>
+  </div>
+  <div class="sp-bento">
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 8h1a4 4 0 010 8h-1M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M6 2v6M10 2v6M14 2v6"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Gestión</div><div class="sp-bento-title">Sistema de Gestión ASG</div><div class="sp-bento-desc">Estándares comunes en todas las unidades con KPIs definidos y monitoreo continuo.</div></div>
+    </div>
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Capacitación</div><div class="sp-bento-title">28,059 horas de formación</div><div class="sp-bento-desc">A comunidades, colaboradores, proveedores y contratistas. 1,499,253 horas en seguridad.</div></div>
+    </div>
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Integridad</div><div class="sp-bento-title">Anti-soborno ISO 37001</div><div class="sp-bento-desc">Certificación en AENZA y todas las empresas del grupo incluyendo subsidiarias.</div></div>
+    </div>
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Vivienda</div><div class="sp-bento-title">100% Bono Verde</div><div class="sp-bento-desc">Todos los proyectos de vivienda social de VIVA en el programa Bono Verde.</div></div>
+    </div>
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Empleo</div><div class="sp-bento-title">34% mano de obra local</div><div class="sp-bento-desc">Más de un tercio de la contratación prioriza talento de las comunidades de influencia.</div></div>
+    </div>
+    <div class="sp-bento-card">
+      <div class="sp-bento-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="sp-bento-content"><div class="sp-bento-label">Evaluación</div><div class="sp-bento-title">+10 puntos CSA 2024 vs 2023</div><div class="sp-bento-desc">5,681 proveedores gestionados bajo criterios ASG en toda la corporación.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. CERTIFICACIONES -->
+<div class="sp-certs">
+  <div class="sp-certs-top">
+    <div>
+      <div class="label">Estándares internacionales</div>
+      <h2 class="h2 inv">Nuestras <em>certificaciones</em></h2>
+    </div>
+    <p class="sp-certs-top-note">Certificados ISO verificados en calidad, medio ambiente, seguridad y anti-soborno en todo el grupo.</p>
+  </div>
+  <div class="sp-certs-grid">
+    <div class="sp-cert-col">
+      <img class="sp-cert-col-logo" src="logo-aenza.png" alt="AENZA" onerror="this.style.display='none';document.getElementById('fb-aenza').style.display='flex'"/>
+      <div id="fb-aenza" class="sp-cert-logo-fb" style="display:none">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M2 26L14 2L26 26" stroke="#0345F5" stroke-width="2.4" stroke-linejoin="round"/><line x1="19" y1="17" x2="27" y2="5" stroke="#0345F5" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <span>AENZA</span>
+      </div>
+      <div class="sp-cert-col-name">AENZA S.A.A.</div>
+      <div class="sp-cert-col-sub">Corporativo</div>
+      <div class="sp-cert-list">
+        <a href="https://www.aenza.com.pe/media/fthoybiw/certificado-aenza-saa-9001_spa_eng.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 9001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/f5dpldkc/certificado-aenza-matriz-14001_spa_eng.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 14001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/ognhsmp4/certificado-aenza-saa-45001_spa_eng.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 45001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/kjjnjs3w/aenza-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/wcdee2gz/aenza-servicios-corporativos-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Serv. Corp. ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="sp-cert-col">
+      <img class="sp-cert-col-logo" src="unnaene.png" alt="UNNA Energía" onerror="this.style.display='none';document.getElementById('fb-unnaene').style.display='flex'"/>
+      <div id="fb-unnaene" class="sp-cert-logo-fb" style="display:none">
+        <svg width="18" height="28" viewBox="0 0 24 28" fill="none"><path d="M16 2L10 14h6l-4 12 14-18H18l6-8z" stroke="#0345F5" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>UNNA Energía</span>
+      </div>
+      <div class="sp-cert-col-name">UNNA Energía</div>
+      <div class="sp-cert-col-sub">Energía renovable</div>
+      <div class="sp-cert-list">
+        <a href="https://www.aenza.com.pe/media/rggnyg2m/unna_energia_iso_9001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 9001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/h1zezakh/unna_energia_iso_14001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 14001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/edzlwep0/unna_energia_iso_45001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 45001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/5azlc3he/unna-energ%C3%ADa-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/zd3pzexg/terminales_del_peru_iso_9001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Terminales ISO 9001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/3s3luame/terminales_del_peru_iso_14001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Terminales ISO 14001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/4ednhnol/terminales_del_peru_iso_45001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Terminales ISO 45001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/lfqlo5p4/terminales-del-per%C3%BA-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Terminales ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="sp-cert-col">
+      <img class="sp-cert-col-logo" src="unnainfra.png" alt="UNNA Infraestructura" onerror="this.style.display='none';document.getElementById('fb-unnainfra').style.display='flex'"/>
+      <div id="fb-unnainfra" class="sp-cert-logo-fb" style="display:none">
+        <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><path d="M3 25V13L14 6L25 13V25" stroke="#0345F5" stroke-width="2" stroke-linejoin="round"/><rect x="10" y="17" width="8" height="8" stroke="#0345F5" stroke-width="1.8"/></svg>
+        <span>UNNA Infraestructura</span>
+      </div>
+      <div class="sp-cert-col-name">UNNA Infraestructura</div>
+      <div class="sp-cert-col-sub">Infraestructura vial</div>
+      <div class="sp-cert-list">
+        <a href="https://www.aenza.com.pe/media/qtbgj10r/unna-transporte-iso-9001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Transporte ISO 9001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/neknt1kt/unna-transporte-iso-14001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Transporte ISO 14001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/vtap3gde/unna-transporte-iso-45001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Transporte ISO 45001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/4kzdneqe/unna-transporte-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Transporte ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/a1xjaidh/certificado-tren-urbano-de-lima-sa-iso-9001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Tren Urbano ISO 9001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/ssmbh13g/certificado-tren-urbano-de-lima-sa-iso-14001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Tren Urbano ISO 14001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/vxkjgl3g/certificado-tren-urbano-de-lima-sa-iso-45001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Tren Urbano ISO 45001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/cxumdbms/tren-urbano-de-lima-l%C3%ADnea-1-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Tren Urbano ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/ssuf2x4p/red-vial-5-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Red Vial 5 ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/jncjp5pf/carretera-sierra-piura-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Sierra Piura ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://www.aenza.com.pe/media/joedig1e/carretera-andina-del-sur-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">Andina del Sur ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+    <div class="sp-cert-col">
+      <img class="sp-cert-col-logo" src="viva.png" alt="VIVA" onerror="this.style.display='none';document.getElementById('fb-viva').style.display='flex'"/>
+      <div id="fb-viva" class="sp-cert-logo-fb" style="display:none">
+        <span style="font-size:1.4rem;font-weight:800;letter-spacing:.08em;color:#0345F5">VIVA</span>
+      </div>
+      <div class="sp-cert-col-name">VIVA</div>
+      <div class="sp-cert-col-sub">Desarrollo inmobiliario</div>
+      <div class="sp-cert-list">
+        <a href="https://www.aenza.com.pe/media/j2df31ka/viva-negocio-inmobiliario-iso-37001.pdf" target="_blank" class="sp-cert-item"><div class="sp-cert-item-dot"></div><span class="sp-cert-item-label">VIVA Negocio Inmobiliario ISO 37001</span><svg class="sp-cert-item-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="sp-certs-foot">
+    <p>Certificaciones <strong>verificadas por organismos independientes</strong> y renovadas bajo estándares ISO internacionales.</p>
+    <a href="https://www.aenza.com.pe/sostenibilidad/" target="_blank" class="btn-primary">Ver más <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></a>
+  </div>
+</div>
+
+<!-- 7. CTA -->
+<div class="sp-cta">
+  <div class="sp-cta-glow"></div>
+  <div class="container sp-cta-inner">
+    <div class="sp-cta-sup">Reporte Integrado · AENZA S.A.A. · 2024</div>
+    <h2 class="sp-cta-h">Descubre nuestro compromiso con el <em>Perú sostenible</em></h2>
+    <div class="sp-cta-btns">
+      <a href="https://www.aenza.com.pe/media/fjnptftw/aenza-reporte-integrado.pdf" target="_blank" class="btn-white">Ver reporte integrado <svg class="ic" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg></a>
+      <a href="https://www.aenza.com.pe/noticias/buenas-noticias-aenza/" target="_blank" class="btn-ghost">Noticias AENZA</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+
+  <!-- Top bar: logo + cta + social -->
+  <div class="ft-top-bar">
+    <div>
+      <div class="ft-logo-big">
+        <img src="aenza.png" alt="AENZA" style="height:72px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+      </div>
+      <div class="ft-tagline-italic">Construyendo el futuro del Perú desde hace más de 70 años.</div>
+    </div>
+    <div class="ft-top-right">
+      <a href="https://www.aenza.com.pe/contactenos/aenza/?subject=AENZA" target="_blank" class="ft-contact-btn">
+        CONTÁCTENOS
+        <svg class="ic" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 5h8M5 1l4 4-4 4"/></svg>
+      </a>
+      <div class="ft-social-row">
+        <a href="https://www.linkedin.com/company/72189954" target="_blank" aria-label="LinkedIn">
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7H10v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.aenza.com.pe" target="_blank" aria-label="Sitio web">
+          <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columns -->
+  <div class="ft-cols-grid">
+
+    <div class="ft-col-v2">
+      <h5>Navegación</h5>
+      <ul>
+        <li><a href="#quienes">Conócenos</a></li>
+        <li><a href="#empresas">Nuestras Empresas</a></li>
+        <li><a href="#concesionarias">Concesionarias</a></li>
+        <li><a href="#noticias">Noticias</a></li>
+        <li><a href="https://www.aenza.com.pe/sostenibilidad/" target="_blank">Sostenibilidad</a></li>
+      </ul>
+    </div>
+
+    <div class="ft-col-v2">
+      <h5>Empresas</h5>
+      <ul>
+        <li><a href="https://www.unna.com.pe" target="_blank">UNNA Infraestructura</a></li>
+        <li><a href="https://www.unnaenergia.com.pe" target="_blank">UNNA Energía</a></li>
+        <li><a href="http://www.viva.com.pe" target="_blank">VIVA</a></li>
+        <li><a href="http://www.lineauno.pe/" target="_blank">Línea 1</a></li>
+        <li><a href="http://www.norvial.com.pe/" target="_blank">Norvial</a></li>
+        <li><a href="http://www.survial.com.pe/" target="_blank">Survial</a></li>
+      </ul>
+    </div>
+
+    <div class="ft-col-v2">
+      <h5>Inversionistas</h5>
+      <ul>
+        <li><a href="https://investorrelations.aenza.com.pe/es" target="_blank">Relación con Inversionistas</a></li>
+        <li><a href="https://investorrelations.aenza.com.pe/gobierno-corporativo/directorio" target="_blank">Nuestro Directorio</a></li>
+        <li><a href="https://www.canaletico.net/" target="_blank">Línea Ética</a></li>
+        <li><a href="https://www.aenza.com.pe" target="_blank">Políticas</a></li>
+      </ul>
+    </div>
+
+    <div class="ft-col-v2">
+      <h5>Contacto</h5>
+      <div class="ft-contact-row">
+        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <span>Av. Petit Thouars Nº 4957,<br>Miraflores 15047, Lima, Perú.</span>
+      </div>
+      <div class="ft-contact-row">
+        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.89"/></svg>
+        <a href="tel:+5112130300">+51 (1) 213 0300</a>
+      </div>
+      <div class="ft-contact-row">
+        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:contactenos@aenza.com.pe">contactenos@aenza.com.pe</a>
+      </div>
+      <div class="ft-contact-row">
+        <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <a href="https://www.canaletico.net/" target="_blank">Canal Ético</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="ft-bottom-bar">
+    <p>© 2025 <a href="https://www.aenza.com.pe" target="_blank">AENZA S.A.A.</a> — Todos los derechos reservados.</p>
+    <p>Lima · Perú</p>
+  </div>
+
+</footer>
+
+
+<script>
+/* CURSOR */
+const cdot=document.getElementById('c-dot'),cring=document.getElementById('c-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function loop(){cdot.style.cssText=`left:${mx}px;top:${my}px`;rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cring.style.cssText=`left:${rx}px;top:${ry}px`;requestAnimationFrame(loop)})();
+
+/* NAV */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{const on=scrollY>50;nav.classList.toggle('solid',on);document.body.classList.toggle('over-dark',!on)},{passive:true});
+
+/* COUNT-UP */
+function easeOut(t){return 1-Math.pow(2,-10*t)}
+function runCount(el){
+  if(el.dataset.done)return;el.dataset.done='1';
+  const tgt=parseFloat(el.dataset.target),sfx=el.dataset.suffix||'',t0=performance.now();
+  (function step(now){const p=Math.min((now-t0)/2000,1),v=Math.round(easeOut(p)*tgt);el.textContent=v.toLocaleString('es-PE')+sfx;if(p<1)requestAnimationFrame(step);else el.textContent=tgt.toLocaleString('es-PE')+sfx;})(performance.now());
+}
+const mw=document.getElementById('sp-metrics-wrap');
+if(mw){
+  let fired=false;
+  new IntersectionObserver(e=>{if(e[0].isIntersecting&&!fired){fired=true;mw.querySelectorAll('.sp-count').forEach(el=>runCount(el));mw.querySelectorAll('.sp-metric-bar-fill').forEach(b=>b.style.width='100%');}},{threshold:.1}).observe(mw);
+  setTimeout(()=>{if(!fired){fired=true;mw.querySelectorAll('.sp-count').forEach(el=>runCount(el));mw.querySelectorAll('.sp-metric-bar-fill').forEach(b=>b.style.width='100%');}},2500);
+}
+</script>
+</body>
+</html>
